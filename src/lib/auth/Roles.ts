@@ -13,3 +13,8 @@ const keyCloak = getKeycloakInstance();
 export const getUserName = () => {
     return keyCloak.tokenParsed?.preferred_username;
 }
+
+
+export const getUserId = () => {
+    return keyCloak.tokenParsed?.sub;
+}

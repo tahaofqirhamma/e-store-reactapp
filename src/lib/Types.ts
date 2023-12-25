@@ -37,8 +37,9 @@ export interface Sale {
 }
 
 export interface SaleRequest {
-    clientId: number;
+    clientId: string;
     productId: number;
     quantity: number;
+    saleDate: Date;
 
 }

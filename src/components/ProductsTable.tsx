@@ -4,7 +4,9 @@ import { AddProductModel } from "./AddProductModel";
 import { IconContext } from "react-icons";
 import { UpdateProductModel } from "./UpdateProductModel";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { getRoles } from "../lib/auth/Roles";
+import { getRoles, getUserId } from "../lib/auth/Roles";
+import { addSale } from "../data/Sales";
+import { SaleRequest } from "../lib/Types";
 interface Product {
   productId: number;
   productName: string;
@@ -15,6 +17,7 @@ interface Product {
 function ProductsTable({ products }: { products: Product[] }) {
   const isAdmin = getRoles();
   const queryClient = useQueryClient();
+  const clientId = getUserId() as string;
 
   const deleteProduct = async (productId: number) => {
     try {
@@ -36,6 +39,16 @@ function ProductsTable({ products }: { products: Product[] }) {
   });
   const deleteProductHandler = (productId: number) => {
     deleteProductMutation.mutate(productId);
+  };
+
+  const addSaleMutation = useMutation({
+    mutationFn: (sale: SaleRequest) => addSale(sale),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["sales"] });
+    },
+  });
+  const addSaleHandler = (sale: SaleRequest) => {
+    addSaleMutation.mutate(sale);
   };
 
   return (
@@ -90,7 +103,17 @@ function ProductsTable({ products }: { products: Product[] }) {
                 </Table.Cell>
               ) : (
                 <Table.Cell>
-                  <button className="bg-[#155e75] py-2 px-4 text-white font-semibold rounded-md">
+                  <button
+                    className="bg-[#155e75] py-2 px-4 text-white font-semibold rounded-md"
+                    onClick={() =>
+                      addSaleHandler({
+                        productId: product.productId,
+                        clientId: clientId,
+                        quantity: 1,
+                        saleDate: new Date(),
+                      })
+                    }
+                  >
                     Buy it
                   </button>
                 </Table.Cell>
