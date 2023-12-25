@@ -1,27 +1,20 @@
-import { useEffect, useState } from "react";
 import SalesTable from "../components/SalesTable";
+import { useQuery } from "@tanstack/react-query";
+import { getSales } from "../data/Sales";
 
 function Sales() {
-  const [sales, setSales] = useState([]);
-  useEffect(() => {
-    fetchSales();
-  }, []);
-  const fetchSales = async () => {
-    try {
-      const response = await fetch(
-        "http://localhost:8888/SALES-SERVICE/api/v1/sales"
-      );
-      const result = await response.json();
-      setSales(result);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+  const querySales = useQuery({
+    queryKey: ["sales"],
+    queryFn: getSales,
+  });
+
+  if (querySales.isLoading) return <div>Loading...</div>;
+  if (querySales.isError) return <div>Error</div>;
   return (
     <section className="flex flex-col items-start p-10 gap-10">
-      <h1 className="text-2xl font-bold">Products</h1>
+      <h1 className="text-2xl font-bold">Sales</h1>
       <div className="w-full">
-        <SalesTable sales={sales} />
+        <SalesTable sales={querySales.data} />
       </div>
     </section>
   );

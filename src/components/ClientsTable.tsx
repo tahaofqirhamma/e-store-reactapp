@@ -1,5 +1,10 @@
 import { Table, TableRow } from "flowbite-react";
-function ClientsTable({ clients }) {
+import { Client } from "../lib/Types";
+import { FaTrash } from "react-icons/fa6";
+import { IconContext } from "react-icons";
+import { getRoles } from "../lib/auth/Roles";
+function ClientsTable({ clients }: { clients: Client[] }) {
+  const idAdmin = getRoles();
   return (
     <div className="overflow-x-auto">
       <Table className="w-full">
@@ -7,6 +12,7 @@ function ClientsTable({ clients }) {
           <Table.HeadCell>Client Id</Table.HeadCell>
           <Table.HeadCell>Full name</Table.HeadCell>
           <Table.HeadCell>Address</Table.HeadCell>
+          {idAdmin && <Table.HeadCell>Actions</Table.HeadCell>}
         </Table.Head>
         <Table.Body className="divide-y">
           {clients.map((client) => (
@@ -18,8 +24,16 @@ function ClientsTable({ clients }) {
                 {client.clientId}
               </Table.Cell>
               <Table.Cell>{client.fullName}</Table.Cell>
-
               <Table.Cell>{client.address}</Table.Cell>
+              {idAdmin && (
+                <Table.Cell>
+                  <button>
+                    <IconContext.Provider value={{ color: "red", size: "20" }}>
+                      <FaTrash />
+                    </IconContext.Provider>
+                  </button>
+                </Table.Cell>
+              )}
             </TableRow>
           ))}
         </Table.Body>

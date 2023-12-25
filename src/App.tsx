@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 const clientsURL = "http://localhost:8888/PRODUCT-SERVICE/api/v1/products";
+
 interface Client {
   productId: number;
   productName: string;
