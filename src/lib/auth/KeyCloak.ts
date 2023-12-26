@@ -13,7 +13,7 @@ keycloakInstance.init({
     onLoad: "login-required",
     checkLoginIframe: true,
     pkceMethod: "S256",
-    redirectUri: "http://localhost:5173/Home",
+    redirectUri: "http://localhost:5173/Home/welcome",
 })
     .then((authenticated) => {
         if (!authenticated) {
