@@ -5,6 +5,7 @@ const keycloakConfig = {
     url: "http://localhost:8080/",
     realm: "estore-app-frontend",
     clientId: "estoreapp-front",
+    redirectUri: "http://localhost:5173/Home",
 };
 
 const keycloakInstance = new Keycloak(keycloakConfig);
