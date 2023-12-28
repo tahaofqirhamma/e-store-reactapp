@@ -1,5 +1,5 @@
 import { Table, TableRow } from "flowbite-react";
-import { FaTrash } from "react-icons/fa6";
+import { LuTrash } from "react-icons/lu";
 import { AddProductModel } from "./AddProductModel";
 import { IconContext } from "react-icons";
 import { UpdateProductModel } from "./UpdateProductModel";
@@ -7,6 +7,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { getRoles, getUserId } from "../lib/auth/Roles";
 import { addSale } from "../data/Sales";
 import { SaleRequest } from "../lib/Types";
+import { deleteProduct } from "../data/products";
 interface Product {
   productId: number;
   productName: string;
@@ -19,18 +20,6 @@ function ProductsTable({ products }: { products: Product[] }) {
   const queryClient = useQueryClient();
   const clientId = getUserId() as string;
 
-  const deleteProduct = async (productId: number) => {
-    try {
-      await fetch(
-        `http://localhost:8888/PRODUCT-SERVICE/api/v1/products/${productId}`,
-        {
-          method: "DELETE",
-        }
-      );
-    } catch (error) {
-      console.error("Delete error:", error);
-    }
-  };
   const deleteProductMutation = useMutation({
     mutationFn: (productId: number) => deleteProduct(productId),
     onSuccess: () => {
@@ -93,7 +82,7 @@ function ProductsTable({ products }: { products: Product[] }) {
                       <IconContext.Provider
                         value={{ color: "red", size: "20" }}
                       >
-                        <FaTrash />
+                        <LuTrash />
                       </IconContext.Provider>
                     </button>
                     <button>

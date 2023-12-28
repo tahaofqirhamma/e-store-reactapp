@@ -27,7 +27,7 @@ export interface ClientRequest {
 
 export interface Sale {
     saleId: number;
-    clientId: number;
+    clientId: string;
     productId: number;
     quantity: number;
     saleDate: string;
@@ -41,5 +41,13 @@ export interface SaleRequest {
     productId: number;
     quantity: number;
     saleDate: Date;
+
+}
+
+export interface Notifications {
+    notificationId: string;
+    description: string;
+    productId: number;
+    clientId: string;
 
 }

@@ -4,6 +4,7 @@ export const getRoles = () => {
     const keyCloak = getKeycloakInstance();
     const isAdmin = keyCloak.tokenParsed?.realm_access?.roles.includes("ADMIN");
     if (isAdmin) {
+        console.log(isAdmin)
         return true;
     }
     return false;

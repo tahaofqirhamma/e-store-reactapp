@@ -1,12 +1,12 @@
 import axios from "axios";
-import { ClientRequest } from "../lib/Types";
+import { Client, ClientRequest } from "../lib/Types";
 
 export const getClients = async () => {
     try {
-        const response = await fetch(
+        const response = await axios.get<Client[]>(
             "http://localhost:8888/CLIENT-SERVICE/api/v1/clients"
         );
-        const result = await response.json();
+        const result = response.data;
         return result;
     } catch (error) {
         console.error("Error fetching data:", error);
@@ -15,10 +15,10 @@ export const getClients = async () => {
 
 export const getClient = async (id: number) => {
     try {
-        const response = await fetch(
+        const response = await axios.get<Client>(
             `http://localhost:8888/CLIENT-SERVICE/api/v1/clients/${id}`
         );
-        const result = await response.json();
+        const result = response.data;
         return result;
     } catch (error) {
         console.error("Error fetching data:", error);

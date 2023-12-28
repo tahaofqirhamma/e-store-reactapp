@@ -3,10 +3,10 @@ import { Product, ProductRequest } from "../lib/Types";
 
 export const getProducts = async () => {
     try {
-        const response = await fetch(
+        const response = await axios.get<Product[]>(
             "http://localhost:8888/PRODUCT-SERVICE/api/v1/products"
         );
-        const result = response.json();
+        const result = response.data;
         return result;
     } catch (error) {
         console.error("Error fetching data:", error);
@@ -15,10 +15,10 @@ export const getProducts = async () => {
 
 export const getProduct = async (id: number) => {
     try {
-        const response = await fetch(
+        const response = await axios.get<Product>(
             `http://localhost:8888/PRODUCT-SERVICE/api/v1/products/${id}`
         );
-        const result = await response.json();
+        const result = response.data;
         return result;
     } catch (error) {
         console.error("Error fetching data:", error);
@@ -49,13 +49,15 @@ export const updateProduct = async (product: Product) => {
     }
 }
 
-export const deleteProduct = async (id: number) => {
+export const deleteProduct = async (productId: number) => {
     try {
-        const response = await axios.delete(
-            `http://localhost:8888/PRODUCT-SERVICE/api/v1/products/${id}`
+        await fetch(
+            `http://localhost:8888/PRODUCT-SERVICE/api/v1/products/${productId}`,
+            {
+                method: "DELETE",
+            }
         );
-        return response;
     } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Delete error:", error);
     }
-}
+};

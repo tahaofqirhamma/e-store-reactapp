@@ -18,7 +18,7 @@ function Sidenav() {
           </Link>
           <Link to={`/Home/clients`}>
             <Sidebar.Item icon={BsPersonLinesFill}>
-              {isAdmin ? "Clients" : "My profile"}
+              {isAdmin == true ? "Profiles" : "Profile"}
             </Sidebar.Item>
           </Link>
           <Link to={`/Home/products`}>
@@ -28,7 +28,7 @@ function Sidenav() {
           </Link>
           <Link to={`/Home/sales`}>
             <Sidebar.Item href="#" icon={FaMoneyBillTrendUp}>
-              {isAdmin ? "Sales" : "My sales"}
+              {isAdmin == true ? "Sales" : "My sales"}
             </Sidebar.Item>
           </Link>
 

@@ -5,6 +5,7 @@ import { IconContext } from "react-icons";
 import { getRoles } from "../lib/auth/Roles";
 function ClientsTable({ clients }: { clients: Client[] }) {
   const idAdmin = getRoles();
+  console.log(clients);
   return (
     <div className="overflow-x-auto">
       <Table className="w-full">

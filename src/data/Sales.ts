@@ -1,10 +1,10 @@
 import axios from "axios";
-import { SaleRequest } from "../lib/Types";
+import { Sale, SaleRequest } from "../lib/Types";
 
 export const getSales = async () => {
     try {
-        const response = await fetch("http://localhost:8888/SALES-SERVICE/api/v1/sales");
-        const result = await response.json();
+        const response = await axios.get<Sale[]>("http://localhost:8888/SALES-SERVICE/api/v1/sales");
+        const result = response.data;
         return result;
 
     } catch (error) {
@@ -15,7 +15,7 @@ export const getSales = async () => {
 
 export const getSale = async (saleId: number) => {
     try {
-        const response = await axios.get(`http://localhost:8888/SALES-SERVICE/api/v1/sales/${saleId}`);
+        const response = await axios.get<Sale>(`http://localhost:8888/SALES-SERVICE/api/v1/sales/${saleId}`);
         return response.data;
     }
     catch (error) {
@@ -23,9 +23,9 @@ export const getSale = async (saleId: number) => {
     }
 }
 
-export const getMySales = async (clientId: number) => {
+export const getMySales = async (clientId: string) => {
     try {
-        const response = await axios.get(`http://localhost:8888/SALES-SERVICE/api/v1/sales/${clientId}`);
+        const response = await axios.get<Sale[]>(`http://localhost:8888/SALES-SERVICE/api/v1/sales/${clientId}`);
         return response.data;
     }
     catch (error) {
@@ -58,7 +58,7 @@ export const DeleteSale = async (saleId: number) => {
 export const validateSale = async (saleId: number, status: string) => {
     try {
         const response = await axios.put(`http://localhost:8888/SALES-SERVICE/api/v1/sale/${saleId}`, { status });
-        return response;
+        return response.data.status as string;
     }
     catch (error) {
         console.error(error);

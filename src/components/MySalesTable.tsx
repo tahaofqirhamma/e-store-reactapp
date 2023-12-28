@@ -1,21 +1,27 @@
 import { Table } from "flowbite-react";
+import { getUserId } from "../lib/auth/Roles";
+import { useQuery } from "@tanstack/react-query";
+import { getMySales } from "../data/Sales";
 import { Sale } from "../lib/Types";
-import { getRoles } from "../lib/auth/Roles";
-import { SaleValidator } from "./SaleValidator";
-function SalesTable({ sales }: { sales: Sale[] }) {
-  const isAdmin = getRoles();
 
+function MySalesTable() {
+  const clientId = getUserId() as string;
+  const queryMySales = useQuery({
+    queryKey: ["mySales", clientId],
+    queryFn: () => getMySales(clientId),
+    refetchInterval: 5000,
+  });
+  const sales: Sale[] = (queryMySales.data as Sale[]) || [];
+  console.log(sales);
   return (
     <div className="overflow-x-auto">
       <Table className="w-full h-full">
         <Table.Head>
           <Table.HeadCell>Sale Id</Table.HeadCell>
           <Table.HeadCell>Date</Table.HeadCell>
-          <Table.HeadCell>Client</Table.HeadCell>
           <Table.HeadCell>Product</Table.HeadCell>
           <Table.HeadCell>Price</Table.HeadCell>
           <Table.HeadCell>Status</Table.HeadCell>
-          {isAdmin && <Table.HeadCell>Actions</Table.HeadCell>}
         </Table.Head>
         <Table.Body className="divide-y">
           {sales.map((sale) => (
@@ -23,11 +29,14 @@ function SalesTable({ sales }: { sales: Sale[] }) {
               key={sale.saleId}
               className="bg-white dark:border-gray-700 dark:bg-gray-800"
             >
-              <Table.Cell>{sale.saleId}</Table.Cell>
+              <Table.Cell className="font-semibold">{sale.saleId}</Table.Cell>
               <Table.Cell>{sale.saleDate}</Table.Cell>
-              <Table.Cell>{sale.client.fullName}</Table.Cell>
-              <Table.Cell>{sale.product.productName}</Table.Cell>
-              <Table.Cell>{sale.product.productPrice}</Table.Cell>
+              <Table.Cell className="font-semibold">
+                {sale.product.productName}
+              </Table.Cell>
+              <Table.Cell className="font-semibold">
+                {sale.product.productPrice}
+              </Table.Cell>
               <Table.Cell
                 className={`font-semibold ${
                   sale.status === "pending"
@@ -43,11 +52,6 @@ function SalesTable({ sales }: { sales: Sale[] }) {
                   ? "Invalidated"
                   : "pending"}
               </Table.Cell>
-              {isAdmin && (
-                <Table.Cell>
-                  <SaleValidator saleId={sale.saleId} />
-                </Table.Cell>
-              )}
             </Table.Row>
           ))}
         </Table.Body>
@@ -56,4 +60,4 @@ function SalesTable({ sales }: { sales: Sale[] }) {
   );
 }
 
-export default SalesTable;
+export default MySalesTable;
