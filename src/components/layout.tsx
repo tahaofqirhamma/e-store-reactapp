@@ -17,7 +17,7 @@ function layout() {
         </div>
       </div>
       <div className="flex flex-row justify-end w-full bg-[#f9fafb] px-4 py-2">
-        {isAdmin == false ? <NotificationToast /> : null}
+        <NotificationToast />
       </div>
     </section>
   );

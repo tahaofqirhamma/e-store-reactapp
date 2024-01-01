@@ -47,3 +47,6 @@ export const handelLogout = async () => {
         console.error("Logout error:", error);
     }
 };
+
+// to visit
+// https://www.keycloak.org/docs/latest/securing_apps/#_javascript_adapter
